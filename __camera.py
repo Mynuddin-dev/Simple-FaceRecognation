@@ -1,21 +1,21 @@
-import cv2
-from imutils.video import WebcamVideoStream
-from imutils.video import FPS
-import imutils
-import numpy as np
-import time
-import dlib
-import cv2
-import os
 import math
-import face_recognition
+import os
 import pickle
+import time
 from collections import deque
-import pandas as pd
 from datetime import datetime
+
+import cv2
+import dlib
+import face_recognition
+import imutils
 import mediapipe as mp
-import requests
+import numpy as np
+import pandas as pd
 import psutil
+import requests
+from imutils.video import FPS, WebcamVideoStream
+
 
 class VideoCamera(object):
     def __init__(self):
@@ -28,20 +28,20 @@ class VideoCamera(object):
      
         self.known_face_encodings=[]
         self.known_face_names=[]
-        if not os.path.exists("../face_rec/encodings.pkl"):
-            my_list = os.listdir('../face_rec/Training_images')
+        if not os.path.exists("./encodings.pkl"):
+            my_list = os.listdir('./Training_images')
             for i in range(len(my_list)):
                 if(my_list[i]!=".ipynb_checkpoints"):
-                    image=face_recognition.load_image_file("../face_rec/Training_images/"+my_list[i])
+                    image=face_recognition.load_image_file("./Training_images/"+my_list[i])
                     print(my_list[i])
                     face_encoding = face_recognition.face_encodings(image,num_jitters=100)[0]
                     self.known_face_encodings.append(face_encoding)
                     self.known_face_names.append(my_list[i])
 
-            with open('../face_rec/encodings.pkl','wb') as f:
+            with open('./encodings.pkl','wb') as f:
                 pickle.dump([self.known_face_encodings,self.known_face_names], f)
         else:
-            with open('../face_rec/encodings.pkl', 'rb') as f:
+            with open('./encodings.pkl', 'rb') as f:
                 self.known_face_encodings ,self.known_face_names = pickle.load(f)
         self.mpFaceDetection = mp.solutions.face_detection
         self.faceDetection = self.mpFaceDetection.FaceDetection(model_selection=1)
@@ -61,7 +61,7 @@ class VideoCamera(object):
 
     def picture_from_frame(self,frame,name = "unknown", confidence=0.0):
         this_time = datetime.now().isoformat(timespec='minutes')
-        known_dir="../face_rec/captured_known_images/"+name
+        known_dir="./captured_known_images/"+name
         # cap = gen_capture(url=0)
         if not (os.path.isdir(known_dir)):
             mode = 0o777
