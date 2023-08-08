@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            setTimeout(function(){
+                window.location.reload(1);
+                }, 900000);                                                                                                                                                                                                                                                                                                                                                                                                           // 
+            
+        </script>
+         <script>
+      let image = document.getElementById('stream');
+
+      async function check() {
+        while (true) {
+          try {
+            await image.decode();
+          } catch {
+             //let image2 = document.getElementById('stream');
+             //image2.src = '';
+             //image2.src = "http://192.168.10.53:5000/video_feed";
+
+             //console.log('reconnected');
+            
+          }
+      
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+      }
+      
+      check();
+    </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8  offset-lg-2">
+                    <h3 class="mt-5">Live Streaming</h3>
+                    <img id="stream" src="http://127.0.0.1:5000/video_feed" width="100%">
+                </div>
+            </div>
+        </div>
+        </body>
+</html>
